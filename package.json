@@ -17,6 +17,7 @@
         "laravel-echo": "^2.2.6",
         "lodash": "^4.17.21",
         "pusher-js": "^8.4.0",
+        "remixicon": "^4.7.0",
         "sweetalert2": "^11.26.3"
     }
 }

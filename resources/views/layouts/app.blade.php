@@ -24,6 +24,12 @@
                 <a href="{{ route('admin.dashboard') }}" class="px-4 py-2 rounded hover:bg-slate-800 transition text-sm">
                     ⚙️ Admin
                 </a>
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="px-4 py-2 rounded hover:bg-slate-800 transition text-sm">
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
     </nav>
