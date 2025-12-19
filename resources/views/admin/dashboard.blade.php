@@ -1,76 +1,133 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-6xl mx-auto">
-    {{-- Header --}}
-    <div class="mb-8">
-        <h1 class="text-4xl font-bold text-amber-400 mb-2">⚙️ Admin Dashboard</h1>
-        <p class="text-slate-400">Kelola meja, lihat statistik, dan kelola barcode</p>
+    <!-- Page Header (Hanya Judul Halaman) -->
+    <div class="mb-10">
+        <h1 class="text-3xl font-bold italic tracking-tight uppercase">
+            Dashboard <span class="text-[#fa9a08]">Overview</span>
+        </h1>
+        <p class="text-slate-500 text-sm mt-1">Pantau performa Class Billiard hari ini.</p>
     </div>
 
-    {{-- Stats Cards --}}
-    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-        <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-            <div class="text-slate-400 text-sm">Total Meja</div>
-            <div class="text-3xl font-bold text-amber-400">{{ $stats['total_tables'] }}</div>
+    <!-- STATS GRID -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <!-- Stat 1: Order Baru -->
+        <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-white/5 hover:border-[#fa9a08]/30 transition-all group shadow-lg">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-blue-500/10 rounded-xl text-blue-500">
+                    <i class="ri-notification-badge-line text-2xl"></i>
+                </div>
+                <span class="text-xs text-slate-500 font-medium">Order Baru</span>
+            </div>
+            <h3 class="text-3xl font-bold">{{ $stats['new_orders'] }}</h3>
+            <p class="text-blue-500 text-xs mt-2 font-medium">Perlu segera diproses</p>
         </div>
-        <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-            <div class="text-slate-400 text-sm">Order Baru</div>
-            <div class="text-3xl font-bold text-blue-400">{{ $stats['new_orders'] }}</div>
+
+        <!-- Stat 2: Cooking -->
+        <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-white/5 hover:border-[#fa9a08]/30 transition-all group shadow-lg">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-yellow-500/10 rounded-xl text-yellow-500">
+                    <i class="ri-fire-line text-2xl"></i>
+                </div>
+                <span class="text-xs text-slate-500 font-medium">Cooking</span>
+            </div>
+            <h3 class="text-3xl font-bold">{{ $stats['cooking_orders'] }}</h3>
+            <p class="text-yellow-500 text-xs mt-2 font-medium">Sedang di dapur</p>
         </div>
-        <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-            <div class="text-slate-400 text-sm">Sedang Memasak</div>
-            <div class="text-3xl font-bold text-yellow-400">{{ $stats['cooking_orders'] }}</div>
+
+        <!-- Stat 3: Selesai -->
+        <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-white/5 hover:border-[#fa9a08]/30 transition-all group shadow-lg">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-green-500/10 rounded-xl text-green-500">
+                    <i class="ri-checkbox-circle-line text-2xl"></i>
+                </div>
+                <span class="text-xs text-slate-500 font-medium">Selesai</span>
+            </div>
+            <h3 class="text-3xl font-bold">{{ $stats['done_orders'] }}</h3>
+            <p class="text-green-500 text-xs mt-2 font-medium">Pesanan hari ini</p>
         </div>
-        <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-            <div class="text-slate-400 text-sm">Selesai</div>
-            <div class="text-3xl font-bold text-green-400">{{ $stats['done_orders'] }}</div>
-        </div>
-        <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-            <div class="text-slate-400 text-sm">Total Pendapatan</div>
-            <div class="text-2xl font-bold text-emerald-400">Rp {{ number_format($stats['total_revenue'], 0, ',', '.') }}</div>
+
+        <!-- Stat 4: Revenue -->
+        <div class="bg-[#1A1A1A] p-6 rounded-2xl border border-[#fa9a08]/20 bg-gradient-to-br from-[#1A1A1A] to-[#fa9a08]/5 transition-all shadow-lg">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-[#fa9a08]/10 rounded-xl text-[#fa9a08]">
+                    <i class="ri-money-dollar-circle-line text-2xl"></i>
+                </div>
+                <span class="text-xs text-slate-400 font-medium">Revenue</span>
+            </div>
+            <h3 class="text-2xl font-bold text-[#fa9a08]">Rp {{ number_format($stats['total_revenue'], 0, ',', '.') }}</h3>
+            <p class="text-slate-400 text-xs mt-2 font-medium">Total Pendapatan</p>
         </div>
     </div>
 
-    {{-- Actions --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <a href="{{ route('admin.barcodes') }}" class="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 rounded-lg p-6 text-center transition transform hover:scale-105 border border-purple-500">
-            <div class="text-3xl mb-2">🔲 QR Code Barcodes</div>
-            <p class="text-slate-200">Lihat & kelola barcode QR untuk setiap meja</p>
+    <!-- QUICK ACTIONS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <a href="{{ route('admin.barcodes') }}"
+            class="group relative overflow-hidden bg-[#1A1A1A] p-8 rounded-3xl border border-white/5 hover:border-[#fa9a08]/50 transition-all shadow-xl">
+            <div class="relative z-10">
+                <i class="ri-qr-code-line text-4xl text-[#fa9a08] mb-4 block"></i>
+                <h4 class="text-xl font-bold mb-2">QR Code Meja</h4>
+                <p class="text-slate-500 text-sm">Lihat & Kelola barcode untuk setiap meja billiard.</p>
+            </div>
+            <div class="absolute -right-8 -bottom-8 text-white/5 group-hover:text-[#fa9a08]/10 transition-colors">
+                <i class="ri-qr-code-line text-[160px]"></i>
+            </div>
         </a>
-        
-        <a href="{{ route('admin.print-barcodes') }}" class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 rounded-lg p-6 text-center transition transform hover:scale-105 border border-indigo-500">
-            <div class="text-3xl mb-2">🖨️ Print Barcode</div>
-            <p class="text-slate-200">Print barcode untuk ditempel di setiap meja</p>
+
+        <a href="{{ route('admin.print-barcodes') }}"
+            class="group relative overflow-hidden bg-[#1A1A1A] p-8 rounded-3xl border border-white/5 hover:border-[#fa9a08]/50 transition-all shadow-xl">
+            <div class="relative z-10">
+                <i class="ri-printer-line text-4xl text-[#fa9a08] mb-4 block"></i>
+                <h4 class="text-xl font-bold mb-2">Print Barcode</h4>
+                <p class="text-slate-500 text-sm">Cetak semua QR Code untuk ditempel secara fisik.</p>
+            </div>
+            <div class="absolute -right-8 -bottom-8 text-white/5 group-hover:text-[#fa9a08]/10 transition-colors">
+                <i class="ri-printer-line text-[160px]"></i>
+            </div>
         </a>
     </div>
 
-    {{-- Tabel Daftar Meja --}}
-    <div class="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
-        <div class="bg-slate-900 px-6 py-4 border-b border-slate-700">
-            <h3 class="text-xl font-bold text-amber-400">📋 Daftar Meja</h3>
+    <!-- TABLE SECTION -->
+    <div class="bg-[#1A1A1A] rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-black/20">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                <i class="ri-list-settings-line text-[#fa9a08]"></i>
+                Status Meja Billiard
+            </h3>
+            <span class="px-4 py-1.5 bg-white/5 rounded-full text-xs font-medium text-slate-400">Total:
+                {{ $stats['total_tables'] }} Meja</span>
         </div>
         <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-                <thead class="bg-slate-700">
+            <table class="w-full text-left">
+                <thead class="text-xs uppercase tracking-wider text-slate-500 bg-black/40">
                     <tr>
-                        <th class="px-6 py-3 text-left text-slate-200">Meja</th>
-                        <th class="px-6 py-3 text-left text-slate-200">Kapasitas</th>
-                        <th class="px-6 py-3 text-left text-slate-200">Status</th>
-                        <th class="px-6 py-3 text-left text-slate-200">Aksi</th>
+                        <th class="px-8 py-5">Nama Meja</th>
+                        <th class="px-8 py-5">Kapasitas</th>
+                        <th class="px-8 py-5 text-center">Status</th>
+                        <th class="px-8 py-5 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-700">
+                <tbody class="divide-y divide-white/5">
                     @foreach($tables as $table)
-                        <tr class="hover:bg-slate-750 transition">
-                            <td class="px-6 py-3 font-semibold text-amber-400">{{ $table->name }}</td>
-                            <td class="px-6 py-3 text-slate-300">{{ $table->capacity }} orang</td>
-                            <td class="px-6 py-3">
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-900 text-green-300">Aktif</span>
+                        <tr class="hover:bg-white/[0.02] transition-colors group">
+                            <td class="px-8 py-5 font-bold text-slate-200 group-hover:text-[#fa9a08] transition-colors">
+                                {{ $table->name }}
                             </td>
-                            <td class="px-6 py-3">
-                                <a href="{{ route('table.barcode', $table->id) }}" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">
-                                    Lihat Barcode →
+                            <td class="px-8 py-5 text-slate-400">
+                                <span class="flex items-center gap-2">
+                                    <i class="ri-group-line text-xs"></i> {{ $table->capacity }} Orang
+                                </span>
+                            </td>
+                            <td class="px-8 py-5">
+                                <div class="flex items-center justify-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                    <span class="text-xs font-medium text-green-500 uppercase tracking-widest">Ready</span>
+                                </div>
+                            </td>
+                            <td class="px-8 py-5 text-right">
+                                <a href="{{ route('table.barcode', $table->id) }}"
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm font-semibold hover:bg-[#fa9a08] hover:text-black hover:border-[#fa9a08] transition-all group-hover:scale-105">
+                                    Lihat QR <i class="ri-arrow-right-up-line"></i>
                                 </a>
                             </td>
                         </tr>
@@ -79,6 +136,4 @@
             </table>
         </div>
     </div>
-</div>
-
 @endsection
